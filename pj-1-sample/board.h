@@ -44,6 +44,13 @@ public:
 	 * apply an action to the board
 	 * return the reward gained by the action, or -1 if the action is illegal
 	 */
+	int fib(int n) {
+		if(n==0)
+			return 0;
+		if(n==1)
+			return 1;
+		return (fib(n-1)+fib(n-2));
+		}
 	int move(const int& opcode) {
 		switch (opcode) {
 		case 0: return move_up();
@@ -65,11 +72,17 @@ public:
 				if (tile == 0) continue;
 				row[c] = 0;
 				if (hold) {
-					if (tile == hold) {
+					if (tile == hold+1) {
 						row[top++] = ++tile;
-						score += (1 << tile);
+						score += fib(row[top++]//(1 << tile);//Modifiy here
 						hold = 0;
-					} else {
+					} 
+					else if (tile == hold-1) {
+						row[top++] = ++hold;
+						score += fib(row[top++])//(1 << tile);//Modifiy here
+						hold = 0;
+					}	
+					else {
 						row[top++] = hold;
 						hold = tile;
 					}
