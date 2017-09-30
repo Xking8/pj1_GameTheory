@@ -27,7 +27,6 @@ public:
 		} else {
 			return "place " + std::to_string(opcode >> 4) + "-index at position " + std::to_string(opcode & 0x0f);
 		}
-		p
 		return "null";
 	}
 

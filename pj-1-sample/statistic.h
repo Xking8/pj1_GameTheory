@@ -34,6 +34,13 @@ public:
 	 *  '93.7%': 93.7% (937 games) reached 8192-tiles in saved games (a.k.a. win rate of 8192-tile)
 	 *  '22.4%': 22.4% (224 games) terminated with 8192-tiles (the largest) in saved games
 	 */
+	int fib(int n) const{
+		if(n==0)
+			return 0;
+		if(n==1)
+			return 1;
+		return (fib(n-1)+fib(n-2));
+		}
 	void show() const {
 		int block = std::min(data.size(), this->block);
 		size_t sum = 0, max = 0, opc = 0, stat[16] = { 0 };
@@ -64,7 +71,7 @@ public:
 		for (int t = 0, c = 0; c < block; c += stat[t++]) {
 			if (stat[t] == 0) continue;
 			int accu = std::accumulate(stat + t, stat + 16, 0);
-			std::cout << "\t" << ((1 << t) & -2u) << "\t" << (accu * coef) << "%";
+			std::cout << "\t" << (fib(t) /*& -2u*/) << "\t" << (accu * coef) << "%";
 			std::cout << "\t(" << (stat[t] * coef) << "%)" << std::endl;
 		}
 		std::cout << std::endl;

@@ -72,14 +72,15 @@ public:
 				if (tile == 0) continue;
 				row[c] = 0;
 				if (hold) {
-					if (tile == hold+1) {
+					if ( (tile == hold+1) || (tile==1&&hold==1)) {
 						row[top++] = ++tile;
-						score += fib(row[top++]//(1 << tile);//Modifiy here
+						score += fib(tile);//(1 << tile);//Modifiy here
+						//std::cout<<"tile: "<<tile<<" fib: "<<fib(tile)<<std::endl;
 						hold = 0;
 					} 
 					else if (tile == hold-1) {
 						row[top++] = ++hold;
-						score += fib(row[top++])//(1 << tile);//Modifiy here
+						score += fib(hold);//(1 << tile);//Modifiy here
 						hold = 0;
 					}	
 					else {
