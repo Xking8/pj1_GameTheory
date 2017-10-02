@@ -76,20 +76,56 @@ private:
 class player : public agent {
 public:
 	player(const std::string& args = "") : agent("name=player " + args) {
+		count = 2;
+		add = 1;
 		if (property.find("seed") != property.end())
 			engine.seed(int(property["seed"]));
 	}
 
 	virtual action take_action(const board& before) {
 		int opcode[] = { 0, 1, 2, 3 };
-		std::shuffle(opcode, opcode + 4, engine);
-		for (int op : opcode) {
+		//std::shuffle(opcode, opcode + 4, engine);
+		//count++;
+		int loopcount = 0;
+		board b;
+		int act = count;
+		for(;loopcount < 3;)
+		{
+			b = before;
+			if(act ==0 )
+			{
+				act++;
+				continue;
+			}
+			if(b.move(act)!=-1)
+			{
+				if(act == 3 || act == 1)
+					add = add * -1;
+				count = count + add;
+				//std::cout <<"add= "<<add<< ", action:"<<act<<" count:"<<count<<std::endl;
+				return action::move(act);
+			}
+			if(act == 3 || act == 1)
+				add = add * -1;
+			count = count + add;
+			act = count;
+			//std::cout <<"ation not applyadd= "<<add<< ", action:"<<act<<" count:"<<count<<std::endl;
+			//count++;
+			loopcount++;
+		}
+		//std::cout<<"try slide up "<<std::endl;
+		if(b.move(0)!=-1)
+			return action::move(0);
+		/*for (int op : opcode) {
 			board b = before;
 			if (b.move(op) != -1) return action::move(op);
-		}
+		}*/
+		
 		return action();
 	}
 
 private:
 	std::default_random_engine engine;
+	int count;
+	int add;
 };

@@ -43,7 +43,7 @@ public:
 		}
 	void show() const {
 		int block = std::min(data.size(), this->block);
-		size_t sum = 0, max = 0, opc = 0, stat[16] = { 0 };
+		size_t sum = 0, max = 0, opc = 0, stat[32] = { 0 };
 		uint64_t duration = 0;
 		auto it = data.end();
 		for (int i = 0; i < block; i++) {
@@ -56,7 +56,7 @@ public:
 			max = std::max(score, max);
 			opc += (path.size() - 2) / 2;
 			int tile = 0;
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < 32; i++)
 				tile = std::max(tile, game(i));
 			stat[tile]++;
 			duration += (path.tock_time() - path.tick_time());
@@ -70,9 +70,13 @@ public:
 		std::cout << "ops = " << int(ops) << std::endl;
 		for (int t = 0, c = 0; c < block; c += stat[t++]) {
 			if (stat[t] == 0) continue;
-			int accu = std::accumulate(stat + t, stat + 16, 0);
-			std::cout << "\t" << (fib(t) /*& -2u*/) << "\t" << (accu * coef) << "%";
-			std::cout << "\t(" << (stat[t] * coef) << "%)" << std::endl;
+			
+			int accu = std::accumulate(stat + t, stat + 32, 0);
+			//std::cout<<"c: "<<c<<" t= "<<t<<"     "<<std::endl;
+			std::cout << "\t" << (fib(t) ) << "\t" << (accu * coef) << "%";
+			std::cout << "\t(" << (stat[t] * coef) << "%)"//<<"accu: "<<accu<<" stat[t]" << stat[t]<<" "<<block 
+			<< std::endl;
+			
 		}
 		std::cout << std::endl;
 	}
